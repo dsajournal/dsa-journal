@@ -96,6 +96,9 @@ Which half is sorted, and does that sorted half contain my target?
 
 That's the only extra question you ask. Everything else is still binary search.
 
+We only check nums[mid] because mid is the element being examined in the current iteration. left and right mainly act as boundaries of the search space and help us decide which half to discard. 
+They are used for decision making, not for checking the target directly. When only one element remains, left == mid == right, so checking nums[mid] is sufficient
+
 -------------------------------------------------------------------------------------------------------------------
 
 class Solution {
