@@ -1,0 +1,97 @@
+The key observation is still:
+
+At any point, one half of the array is always sorted.
+
+Here's the explanation in the same simple style.
+
+Step 1: Check which half is sorted
+
+If nums[mid] >= nums[left], then mid belongs to the left sorted part.
+
+That means all the elements from left to mid are in increasing order.
+
+Now ask yourself:
+
+Can the target be inside this sorted range?
+
+If
+
+nums[left] <= target && target < nums[mid]
+
+then the target lies inside the left sorted part.
+
+So we search the left half.
+
+right = mid - 1;
+
+Otherwise, the target cannot be in the left sorted part.
+
+So we search the right half.
+
+left = mid + 1;
+Step 2: Otherwise, the right half is sorted
+
+If nums[mid] < nums[left], then mid belongs to the right sorted part.
+
+That means all the elements from mid to right are in increasing order.
+
+Now ask yourself:
+
+Can the target be inside this sorted range?
+
+If
+
+nums[mid] < target && target <= nums[right]
+
+then the target lies inside the right sorted part.
+
+So we search the right half.
+
+left = mid + 1;
+
+Otherwise, the target cannot be in the right sorted part.
+
+So we search the left half.
+
+right = mid - 1;
+Step 3: Continue until the target is found
+
+At every iteration:
+
+Find mid.
+Check whether the left half or right half is sorted.
+Check whether the target lies inside that sorted half.
+If it does, search that half.
+Otherwise, search the other half.
+
+Each time, we discard half of the remaining search space.
+
+Eventually:
+
+If nums[mid] == target, we return its index.
+If left > right, the target is not present, so we return -1.
+Why does this work?
+
+In a rotated sorted array, both halves cannot be unsorted at the same time.
+
+At least one half is always sorted.
+
+That sorted half tells us the exact range of values it contains.
+
+If the target falls inside that range, we search there.
+
+Otherwise, we know for certain the target must be in the other half.
+
+By making this decision every iteration, we discard half of the array each time, just like normal binary search.
+
+Think of it like this
+
+For Find Minimum:
+
+Which half contains the minimum element?
+
+For Search Target:
+
+Which half is sorted, and does that sorted half contain my target?
+
+That's the only extra question you ask. Everything else is still binary search.
