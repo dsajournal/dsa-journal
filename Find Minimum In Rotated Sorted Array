@@ -1,0 +1,40 @@
+If `mid` is greater than or equal to the leftmost element, that means it is part of the left sorted part. In the original rotated array, the left sorted part contains the larger elements before the rotation point, 
+while the right sorted part starts at the minimum element and contains the smaller elements after the rotation. Since `mid` is in the left sorted part, the minimum element cannot be in this sorted section. 
+Therefore, we need to search the right half.
+
+If `mid` is smaller than the leftmost element, that means it is part of the right sorted part. In the original rotated array, the right sorted part starts at the minimum element and contains the smaller elements
+after the rotation, while the left sorted part contains the larger elements before the rotation. This means the minimum element is either `mid` itself or somewhere to its left. Therefore, we need to search the left half.
+
+As we perform binary search, we keep discarding half of the search space by moving `left` and `right`. Eventually, if we reach a point where `nums[left] < nums[right]`, 
+it means the remaining search space is already completely sorted. Since the minimum element in a sorted array is always the leftmost element, we update `res` with `nums[left]` and stop the search.
+There is no need to continue because we have already eliminated all the other possible locations where the minimum element could be.
+
+int findMin(vector<int>& nums) {
+    int left = 0;
+    int right = nums.size() - 1;
+    int res = nums[0];
+
+    while (left <= right) {
+
+        // Remaining search space is already sorted
+        if (nums[left] < nums[right]) {
+            res = min(res, nums[left]);
+            break;
+        }
+
+        int mid = left + (right - left) / 2;
+
+        res = min(res, nums[mid]);
+
+        // Mid belongs to the left sorted part
+        if (nums[mid] >= nums[left]) {
+            left = mid + 1;
+        }
+        // Mid belongs to the right sorted part
+        else {
+            right = mid - 1;
+        }
+    }
+
+    return res;
+}
