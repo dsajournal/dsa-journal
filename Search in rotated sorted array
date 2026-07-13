@@ -1,3 +1,7 @@
+I don't need to know where the answer is. I only need to know which half definitely cannot contain it.
+Once I discard that half, I trust binary search to repeat the same reasoning on the remaining half until the answer is found.
+
+
 The key observation is still:
 
 At any point, one half of the array is always sorted.
