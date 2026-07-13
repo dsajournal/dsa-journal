@@ -1,6 +1,9 @@
+So the mental model is:
+
 I don't need to know where the answer is. I only need to know which half definitely cannot contain it.
 Once I discard that half, I trust binary search to repeat the same reasoning on the remaining half until the answer is found.
 
+This mindset applies not only to these two problems, but to almost every binary search variant.
 
 The key observation is still:
 
