@@ -9,6 +9,14 @@ As we perform binary search, we keep discarding half of the search space by movi
 it means the remaining search space is already completely sorted. Since the minimum element in a sorted array is always the leftmost element, we update `res` with `nums[left]` and stop the search.
 There is no need to continue because we have already eliminated all the other possible locations where the minimum element could be.
 
+Binary search, like recursion, has a leap of faith.
+
+The leap of faith is:
+
+If I correctly decide which half can be discarded, I can trust that binary search will find the answer in the remaining half if it exists.
+
+You don't need to worry about what happens inside that half. The next iteration applies the same logic again.
+
 int findMin(vector<int>& nums) {
     int left = 0;
     int right = nums.size() - 1;
