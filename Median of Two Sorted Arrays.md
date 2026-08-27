@@ -1,5 +1,3 @@
-Sure. Here is the same note in clean `.md` format, keeping the explanation and structure intact:
-
 ````md
 # Median of Two Sorted Arrays
 
@@ -64,46 +62,146 @@ So every time we move `cut1`, `cut2` changes automatically.
 
 Now we check whether the partition is correct.
 
-### Case 1: Partition is correct
+Think of the partition as deciding **how many elements we take from each array for the left half**.
 
 ```text
-left1 <= right2
-left2 <= right1
+nums1: [ left side | right side ]
+nums2: [ left side | right side ]
+
+             ↑
+        partition
 ```
 
-We have found the correct partition.
+We want the left half to contain the **smaller elements**.
 
-### Case 2: Partition in nums1 is too far right
+### Case 1: `left1 > right2`
 
-If:
+Imagine:
 
 ```text
-left1 > right2
+nums1: [ 1, 3, 8 | 10, 12 ]
+nums2: [ 2, 7    | 9, 11 ]
 ```
 
-then we have taken too many elements from `nums1` into the left half.
-
-Therefore, move the partition left:
+We have:
 
 ```text
-high = cut1 - 1
+left1 = 8
+right2 = 9
 ```
 
-### Case 3: Partition in nums1 is too far left
+That's fine because `8 < 9`.
 
-Otherwise:
+But imagine:
 
 ```text
-left2 > right1
+nums1: [ 1, 3, 8, 10 | 12 ]
+nums2: [ 2, 7       | 9, 11 ]
 ```
 
-This means we need to take more elements from `nums1` into the left half.
+Now:
+
+```text
+left1 = 10
+right2 = 9
+```
+
+So we have:
+
+```text
+10 is on the LEFT
+9  is on the RIGHT
+```
+
+That's wrong.
+
+**Why?**
+
+Because `10` should not be in the left half if `9` is still sitting in the right half.
+
+So we need to take **fewer elements from nums1**.
+
+That means:
+
+```text
+Move partition in nums1 ← LEFT
+```
 
 Therefore:
 
-```text
-low = cut1 + 1
+```cpp
+high = cut1 - 1;
 ```
+
+---
+
+### Case 2: `left2 > right1`
+
+Imagine:
+
+```text
+nums1: [ 1, 3 | 8, 10 ]
+nums2: [ 2, 7, 9 | 11, 12 ]
+```
+
+Now:
+
+```text
+left2 = 9
+right1 = 8
+```
+
+So:
+
+```text
+9 is on the LEFT
+8 is on the RIGHT
+```
+
+Again, that's wrong.
+
+But this time the problem is that **nums1 hasn't contributed enough elements to the left half**.
+
+We need to take **more elements from nums1**.
+
+So:
+
+```text
+Move partition in nums1 → RIGHT
+```
+
+Therefore:
+
+```cpp
+low = cut1 + 1;
+```
+
+### The easiest mental picture
+
+Just ask:
+
+> **Do I need MORE or FEWER elements from nums1 on the left?**
+
+```text
+left1 > right2
+       ↓
+nums1 has TOO MANY
+       ↓
+move cut1 LEFT
+```
+
+```text
+left2 > right1
+       ↓
+nums1 has TOO FEW
+       ↓
+move cut1 RIGHT
+```
+
+That's really all the binary search is doing:
+
+**Too many from nums1 → go left.
+Too few from nums1 → go right.**
 
 ---
 
