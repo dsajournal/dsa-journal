@@ -1,161 +1,153 @@
+Sure. Here is the same note in clean `.md` format, keeping the explanation and structure intact:
+
+````md
 # Median of Two Sorted Arrays
 
-## Problem
+We have two sorted arrays and need to find the median of the combined sorted array.
 
-Given two sorted arrays `nums1` and `nums2`, return the median of the two sorted arrays.
+The brute force approach would be to merge both arrays and then find the median. This takes O(m + n) time.
 
-**Required Time Complexity:** `O(log(min(m, n)))`
+However, the problem requires a solution in O(log(min(m, n))).
 
----
-
-## Key Idea
-
-The important observation is:
-
-> We don't actually need to merge the two arrays.
-
-We only need to find a **partition** such that:
-
-```text
-Left Half | Right Half
-```
-
-contains exactly half of the total elements, and every element on the left is smaller than or equal to every element on the right.
-
-### Example
-
-```text
-nums1 = [1, 3]
-nums2 = [2, 4, 5]
-
-Combined:
-
-[1, 2, 3] | [4, 5]
-```
-
-The partition is correct because:
-
-```text
-max(left) <= min(right)
-```
+The key idea is to find a **partition** in both arrays such that all elements on the left side of the partition are smaller than or equal to all the elements on the right side.
 
 ---
 
-## Why Binary Search?
+## The Main Idea
 
-We can choose how many elements to take from `nums1`.
-
-Once we decide that, the number of elements we need from `nums2` is automatically determined.
+Suppose we have:
 
 ```text
-partition2 = half - partition1
-```
+nums1 = [1, 3, 8]
+nums2 = [2, 7, 10, 12]
+````
 
-So instead of searching through both arrays, we binary search only one array.
-
-To make this easier, always binary search on the **smaller array**.
-
-```cpp
-if (nums1.size() > nums2.size())
-    return findMedianSortedArrays(nums2, nums1);
-```
-
----
-
-## Partition Logic
-
-Suppose:
+We want to divide both arrays like this:
 
 ```text
-nums1 = [1, 3]
-nums2 = [2, 4, 5]
+nums1: [1, 3 | 8]
+nums2: [2, 7 | 10, 12]
 ```
 
-Total elements:
+The left side contains half of all elements.
+
+If this is the correct partition, then:
 
 ```text
-5
+largest element on left <= smallest element on right
 ```
 
-Left half should contain:
-
-```text
-(5 + 1) / 2 = 3
-```
-
-elements.
-
-If we take `2` elements from `nums1`:
-
-```text
-nums1: [1, 3] | 
-nums2: [2] | [4, 5]
-```
-
-So:
-
-```text
-partition1 = 2
-partition2 = 1
-```
-
-Now define four values:
-
-```text
-left1  = nums1[partition1 - 1]
-right1 = nums1[partition1]
-
-left2  = nums2[partition2 - 1]
-right2 = nums2[partition2]
-```
-
-For the partition to be valid:
+So we need:
 
 ```text
 left1 <= right2
-AND
 left2 <= right1
+```
+
+Once this condition is satisfied, we have found the correct partition.
+
+---
+
+## Why Binary Search Works
+
+We perform binary search on the **smaller array**.
+
+Suppose we choose a partition `cut1` in `nums1`.
+
+The partition in `nums2` is automatically determined because the left side must contain half of all elements.
+
+```text
+cut2 = (m + n + 1) / 2 - cut1
+```
+
+So every time we move `cut1`, `cut2` changes automatically.
+
+Now we check whether the partition is correct.
+
+### Case 1: Partition is correct
+
+```text
+left1 <= right2
+left2 <= right1
+```
+
+We have found the correct partition.
+
+### Case 2: Partition in nums1 is too far right
+
+If:
+
+```text
+left1 > right2
+```
+
+then we have taken too many elements from `nums1` into the left half.
+
+Therefore, move the partition left:
+
+```text
+high = cut1 - 1
+```
+
+### Case 3: Partition in nums1 is too far left
+
+Otherwise:
+
+```text
+left2 > right1
+```
+
+This means we need to take more elements from `nums1` into the left half.
+
+Therefore:
+
+```text
+low = cut1 + 1
 ```
 
 ---
 
-## How to Move Binary Search
+## Handling Boundaries
 
-### Case 1: `left1 > right2`
+Sometimes the partition is at the beginning or end of an array.
 
-We took too many elements from `nums1`.
-
-So move left:
+For example:
 
 ```text
-high = partition1 - 1
+nums1: [ | 1, 3, 8]
 ```
 
-### Case 2: `left2 > right1`
+There is no element on the left.
 
-We took too few elements from `nums1`.
-
-So move right:
+So we treat the left value as:
 
 ```text
-low = partition1 + 1
+INT_MIN
 ```
 
-### Case 3: Correct Partition
+Similarly:
 
 ```text
-left1 <= right2
-AND
-left2 <= right1
+nums1: [1, 3, 8 | ]
 ```
 
-Now we have found the median.
+There is no element on the right.
+
+So we treat the right value as:
+
+```text
+INT_MAX
+```
+
+This allows us to use the same comparison logic for every partition.
 
 ---
 
 ## Finding the Median
 
-### Odd Number of Elements
+Once we have the correct partition:
+
+### Odd number of elements
 
 The median is the largest element on the left:
 
@@ -163,37 +155,49 @@ The median is the largest element on the left:
 median = max(left1, left2)
 ```
 
-### Even Number of Elements
+### Even number of elements
 
-The median is:
+The median is the average of:
 
 ```text
-(max(left1, left2) + min(right1, right2)) / 2
+largest element on the left
+smallest element on the right
+```
+
+Therefore:
+
+```text
+median = (max(left1, left2) + min(right1, right2)) / 2.0
 ```
 
 ---
 
-## Handling Boundary Cases
+## Why We Search the Smaller Array
 
-If the partition is at the beginning or end of an array, one side doesn't have an element.
+We only need to binary search one array.
 
-Use:
+To minimize the number of iterations, we always search the smaller array.
 
-```cpp
-INT_MIN
+Therefore:
+
+```text
+Time Complexity = O(log(min(m, n)))
+Space Complexity = O(1)
 ```
 
-for the missing left element.
+---
 
-Use:
+## Leap of Faith
 
-```cpp
-INT_MAX
-```
+Binary search, like recursion, has a leap of faith.
 
-for the missing right element.
+The leap of faith is:
 
-This allows us to use the same partition logic without special cases.
+If I correctly determine whether the partition in `nums1` is too far left or too far right, I can trust binary search to find the correct partition in the remaining half.
+
+I don't need to worry about what happens inside that half.
+
+The next iteration applies exactly the same logic again.
 
 ---
 
@@ -203,116 +207,59 @@ This allows us to use the same partition logic without special cases.
 double findMedianSortedArrays(vector<int>& nums1, vector<int>& nums2) {
 
     // Always perform binary search on the smaller array
-    if (nums1.size() > nums2.size()) {
+    if (nums1.size() > nums2.size())
         return findMedianSortedArrays(nums2, nums1);
-    }
 
-    int n1 = nums1.size();
-    int n2 = nums2.size();
+    int m = nums1.size();
+    int n = nums2.size();
 
-    // Total number of elements in the left half
-    int half = (n1 + n2 + 1) / 2;
-
+    // Binary search range for nums1
     int low = 0;
-    int high = n1;
+    int high = m;
 
     while (low <= high) {
 
-        // Partition nums1
-        int partition1 = (low + high) / 2;
+        // Partition index for nums1
+        int cut1 = low + (high - low) / 2;
 
-        // Remaining elements required from nums2
-        int partition2 = half - partition1;
+        // Partition index for nums2
+        // So that the left side contains half of all elements
+        int cut2 = (m + n + 1) / 2 - cut1;
 
-        // Elements just before and after the partition
-        int left1 = (partition1 == 0) ? INT_MIN : nums1[partition1 - 1];
-        int right1 = (partition1 == n1) ? INT_MAX : nums1[partition1];
+        // Elements around the partition in nums1
+        int left1 = (cut1 == 0) ? INT_MIN : nums1[cut1 - 1];
+        int right1 = (cut1 == m) ? INT_MAX : nums1[cut1];
 
-        int left2 = (partition2 == 0) ? INT_MIN : nums2[partition2 - 1];
-        int right2 = (partition2 == n2) ? INT_MAX : nums2[partition2];
+        // Elements around the partition in nums2
+        int left2 = (cut2 == 0) ? INT_MIN : nums2[cut2 - 1];
+        int right2 = (cut2 == n) ? INT_MAX : nums2[cut2];
 
-        // Correct partition found
+        // Check if we found the correct partition
         if (left1 <= right2 && left2 <= right1) {
 
-            // Odd total length
-            if ((n1 + n2) % 2 == 1) {
+            // Odd total number of elements
+            // Median is the largest element on the left
+            if ((m + n) % 2 == 1)
                 return max(left1, left2);
-            }
 
-            // Even total length
+            // Even total number of elements
+            // Median is the average of the middle two elements
             return (max(left1, left2) + min(right1, right2)) / 2.0;
         }
 
-        // Too many elements taken from nums1
-        if (left1 > right2) {
-            high = partition1 - 1;
-        }
+        // Partition in nums1 is too far to the right
+        if (left1 > right2)
+            high = cut1 - 1;
 
-        // Too few elements taken from nums1
-        else {
-            low = partition1 + 1;
-        }
+        // Partition in nums1 is too far to the left
+        else
+            low = cut1 + 1;
     }
 
+    // This line should never be reached for valid input
     return 0.0;
 }
 ```
 
----
-
-## Complexity
-
-```text
-Time:  O(log(min(m, n)))
-Space: O(1)
 ```
-
----
-
-## Pattern to Remember
-
-This problem is essentially:
-
-```text
-Binary Search on Partition
 ```
-
-The most important thing to remember is:
-
-```text
-left1 <= right2
-AND
-left2 <= right1
-```
-
-Once this condition is true, the partition is correct and the median can be calculated from the four boundary values.
-
----
-
-## Interview Thought Process
-
-When you see:
-
-```text
-Two sorted arrays
-+
-Need median
-+
-O(log(m + n))
-```
-
-Think:
-
-```text
-Don't merge.
-
-Find a partition.
-
-Binary search the smaller array.
-
-Make sure:
-
-max(left) <= min(right)
-```
-
-That is the core idea behind the entire solution.
