@@ -137,6 +137,8 @@ bool hasCycle(ListNode* head) {
 ```
 
 ---
+we need to make sure both fast and fast->next exist before accessing so both checked 
+while (fast != nullptr && fast->next != nullptr)
 
 ## Why Does Meeting Mean a Cycle?
 
@@ -259,3 +261,4 @@ fast hits NULL → No cycle
 ### One-line takeaway
 
 > **Two pointers moving at different speeds: if they meet, there is a cycle.**
+
