@@ -294,3 +294,20 @@ Remove expired from front
         ↓
 Front = MAX
 ```
+## Important Deque Insight
+
+The new element is always part of the current window. If it is larger than elements at the back, those smaller elements can never become the maximum while the new element remains in the window, so remove them.
+
+```cpp
+while (!dq.empty() && nums[dq.back()] <= nums[right])
+    dq.pop_back();
+```
+
+The deque itself has **no rule** that it must be decreasing. We choose to maintain it in decreasing order so that:
+
+```text
+dq.front() = maximum of current window
+```
+
+> **Deque is the data structure. Decreasing order is our strategy.**
+
