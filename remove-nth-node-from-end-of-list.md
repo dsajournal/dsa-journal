@@ -90,16 +90,37 @@ ListNode* removeNthFromEnd(ListNode* head, int n) {
     return dummy.next;
 }
 ```
+
+```cpp
+while (right->next != nullptr) {
+    right = right->next;
+}
+```
+
 At the end:
 
+```text
 right = address of the LAST NODE
 right->next = nullptr
+```
 
-So right itself is NOT nullptr.
+So **`right` itself is NOT `nullptr`**.
 
+```text
 1 → 2 → 3 → 4 → 5 → nullptr
                 ↑
               right
+```
+
+Therefore:
+
+```cpp
+right == nullptr        // false
+right->next == nullptr  // true
+```
+
+That's the key distinction.
+
 ---
 
 ## Important Point
