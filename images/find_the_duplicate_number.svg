@@ -113,16 +113,26 @@
   <rect x="974" y="535" width="602" height="55" rx="18" class="green"/>
   <text x="998" y="571" class="head">4. C++ code</text>
   <rect x="995" y="605" width="560" height="266" rx="12" fill="#152131"/>
-  <text x="1015" y="636" class="mono">int findDuplicate(vector&lt;int&gt;&amp; nums) {</text>
-  <text x="1035" y="661" class="mono">int slow = 0, fast = 0;</text>
-  <text x="1035" y="695" class="mono" style="fill:#7de5a2">// Find meeting point</text>
-  <text x="1035" y="720" class="mono">do {</text>
-  <text x="1055" y="745" class="mono">slow = nums[slow];</text>
-  <text x="1055" y="770" class="mono">fast = nums[nums[fast]];</text>
-  <text x="1035" y="795" class="mono">} while (slow != fast);</text>
-  <text x="1035" y="825" class="mono" style="fill:#7de5a2">// Find cycle entry</text>
-  <text x="1035" y="850" class="mono">slow = 0; // move both one step until equal</text>
-  <text x="1015" y="890" class="mono" style="font-size:16px">while (slow != fast) { slow = nums[slow]; fast = nums[fast]; } return slow;</text>
+  <text x="1015" y="625" class="mono" style="font-size:14px">class Solution {</text>
+  <text x="1015" y="638" class="mono" style="font-size:14px">public:</text>
+  <text x="1015" y="651" class="mono" style="font-size:14px">    int findDuplicate(vector&lt;int&gt;&amp; nums) {</text>
+  <text x="1015" y="664" class="mono" style="font-size:14px">        int slow = 0, fast = 0;</text>
+  <text x="1015" y="677" class="mono" style="font-size:14px"> </text>
+  <text x="1015" y="690" class="mono" style="fill:#7de5a2" style="font-size:14px">        // 1. Find meeting point</text>
+  <text x="1015" y="703" class="mono" style="font-size:14px">        do {</text>
+  <text x="1015" y="716" class="mono" style="font-size:14px">            slow = nums[slow];</text>
+  <text x="1015" y="729" class="mono" style="font-size:14px">            fast = nums[nums[fast]];</text>
+  <text x="1015" y="742" class="mono" style="font-size:14px">        } while (slow != fast);</text>
+  <text x="1015" y="755" class="mono" style="font-size:14px"> </text>
+  <text x="1015" y="768" class="mono" style="fill:#7de5a2" style="font-size:14px">        // 2. Find cycle entry</text>
+  <text x="1015" y="781" class="mono" style="font-size:14px">        slow = 0;</text>
+  <text x="1015" y="794" class="mono" style="font-size:14px">        while (slow != fast) {</text>
+  <text x="1015" y="807" class="mono" style="font-size:14px">            slow = nums[slow];</text>
+  <text x="1015" y="820" class="mono" style="font-size:14px">            fast = nums[fast];</text>
+  <text x="1015" y="833" class="mono" style="font-size:14px">        }</text>
+  <text x="1015" y="846" class="mono" style="font-size:14px">        return slow;</text>
+  <text x="1015" y="859" class="mono" style="font-size:14px">    }</text>
+  <text x="1015" y="872" class="mono" style="font-size:14px">};</text>
 
   <!-- Bottom takeaway -->
   <rect x="24" y="917" width="1552" height="255" rx="18" class="section"/>
