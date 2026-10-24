@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1200" viewBox="0 0 1600 1200">
+  <defs>
+    <linearGradient id="header" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#123365"/><stop offset="1" stop-color="#1d5798"/></linearGradient>
+    <linearGradient id="panel" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#ffffff"/><stop offset="1" stop-color="#f5f9ff"/></linearGradient>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#20354f"/></marker>
+    <marker id="redArrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 Z" fill="#e34b52"/></marker>
+    <style>
+      .title{font:700 46px Arial,sans-serif;fill:#fff}.subtitle{font:22px Arial,sans-serif;fill:#e7f1ff}
+      .head{font:700 25px Arial,sans-serif;fill:#123365}.body{font:20px Arial,sans-serif;fill:#22344b}
+      .small{font:17px Arial,sans-serif;fill:#32455d}.mono{font:17px 'Courier New',monospace;fill:#e4efff}
+      .nodeText{font:700 27px Arial,sans-serif;fill:#15253c}.indexText{font:700 18px Arial,sans-serif;fill:#4c6179}
+      .section{fill:url(#panel);stroke:#d4e3f4;stroke-width:2}.blue{fill:#e5f1ff}.green{fill:#e4f8ef}.red{fill:#ffe9e9}.gold{fill:#fff4d4}
+    </style>
+  </defs>
+  <rect width="1600" height="1200" fill="#eef4fb"/>
+  <rect x="24" y="22" width="1552" height="124" rx="20" fill="url(#header)"/>
+  <text x="56" y="75" class="title">Find the Duplicate Number</text>
+  <text x="58" y="111" class="subtitle">LeetCode 287 · Treat the array as a linked list and find the cycle's entry point.</text>
+  <rect x="1340" y="48" width="205" height="48" rx="14" fill="#e4efff"/>
+  <text x="1442" y="78" text-anchor="middle" class="head" style="font-size:20px">O(n) time · O(1) space</text>
+
+  <!-- Array panel -->
+  <rect x="24" y="168" width="470" height="345" rx="18" class="section"/>
+  <rect x="24" y="168" width="470" height="55" rx="18" class="blue"/>
+  <text x="48" y="204" class="head">1. Array → index nodes</text>
+  <text x="48" y="252" class="body">Example: nums = [1, 3, 4, 2, 2]</text>
+  <text x="48" y="292" class="small">Index i</text>
+  <text x="48" y="336" class="small">nums[i]</text>
+  <g stroke="#b7cce3" stroke-width="1.5">
+    <rect x="150" y="265" width="60" height="46" fill="#edf5ff"/><rect x="210" y="265" width="60" height="46" fill="#edf5ff"/><rect x="270" y="265" width="60" height="46" fill="#edf5ff"/><rect x="330" y="265" width="60" height="46" fill="#edf5ff"/><rect x="390" y="265" width="60" height="46" fill="#edf5ff"/>
+    <rect x="150" y="311" width="60" height="46" fill="#fff0b8"/><rect x="210" y="311" width="60" height="46" fill="#d9f5e5"/><rect x="270" y="311" width="60" height="46" fill="#dcecff"/><rect x="330" y="311" width="60" height="46" fill="#ffdcdc"/><rect x="390" y="311" width="60" height="46" fill="#ffdcdc"/>
+  </g>
+  <g class="body" text-anchor="middle" style="font-weight:700">
+    <text x="180" y="294">0</text><text x="240" y="294">1</text><text x="300" y="294">2</text><text x="360" y="294">3</text><text x="420" y="294">4</text>
+    <text x="180" y="341">1</text><text x="240" y="341">3</text><text x="300" y="341">4</text><text x="360" y="341">2</text><text x="420" y="341">2</text>
+  </g>
+  <rect x="48" y="386" width="422" height="91" rx="12" class="gold"/>
+  <text x="65" y="417" class="body" style="font-weight:700">Rule: next index = nums[current index]</text>
+  <text x="65" y="446" class="small">0 points to 1 · 1 points to 3 · 3 points to 2</text>
+  <text x="65" y="469" class="small">2 points to 4 · 4 points back to 2</text>
+
+  <!-- Graph panel -->
+  <rect x="514" y="168" width="1062" height="345" rx="18" class="section"/>
+  <rect x="514" y="168" width="1062" height="55" rx="18" class="green"/>
+  <text x="538" y="204" class="head">2. Place nodes in increasing index order, then draw the connections</text>
+  <text x="540" y="251" class="small">Each node is an index, not the value stored at that index.</text>
+  <!-- edges: 0->1 -->
+  <path d="M622 340 L716 340" fill="none" stroke="#20354f" stroke-width="4" marker-end="url(#arrow)"/>
+  <text x="670" y="322" class="small" text-anchor="middle">0 → 1</text>
+  <!-- edge 1->3 top arc -->
+  <path d="M782 325 C820 255 960 255 998 325" fill="none" stroke="#20354f" stroke-width="4" marker-end="url(#arrow)"/>
+  <text x="890" y="278" class="small" text-anchor="middle">1 → 3</text>
+  <!-- edge 3->2 backwards with arc under -->
+  <path d="M1016 361 C1003 421 883 421 872 361" fill="none" stroke="#20354f" stroke-width="4" marker-end="url(#arrow)"/>
+  <text x="944" y="430" class="small" text-anchor="middle">3 → 2</text>
+  <!-- edge 2->4 top arc -->
+  <path d="M935 322 C1000 260 1148 260 1218 322" fill="none" stroke="#e34b52" stroke-width="4" marker-end="url(#redArrow)"/>
+  <text x="1076" y="277" class="small" text-anchor="middle" style="fill:#c52e3b;font-weight:700">2 → 4</text>
+  <!-- edge 4->2 bottom arc -->
+  <path d="M1220 363 C1150 447 1000 447 936 363" fill="none" stroke="#e34b52" stroke-width="4" marker-end="url(#redArrow)"/>
+  <text x="1078" y="465" class="small" text-anchor="middle" style="fill:#c52e3b;font-weight:700">4 → 2</text>
+  <g>
+    <circle cx="590" cy="340" r="33" fill="#dcecff" stroke="#5d91c7" stroke-width="3"/><text x="590" y="349" text-anchor="middle" class="nodeText">0</text><text x="590" y="305" text-anchor="middle" class="indexText">index 0</text>
+    <circle cx="750" cy="340" r="33" fill="#fff0b8" stroke="#d4ac3c" stroke-width="3"/><text x="750" y="349" text-anchor="middle" class="nodeText">1</text><text x="750" y="305" text-anchor="middle" class="indexText">index 1</text>
+    <circle cx="910" cy="340" r="33" fill="#d9f5e5" stroke="#5cae84" stroke-width="3"/><text x="910" y="349" text-anchor="middle" class="nodeText">2</text><text x="910" y="305" text-anchor="middle" class="indexText">index 2</text>
+    <circle cx="1048" cy="340" r="33" fill="#ffdcdc" stroke="#d97a7a" stroke-width="3"/><text x="1048" y="349" text-anchor="middle" class="nodeText">3</text><text x="1048" y="305" text-anchor="middle" class="indexText">index 3</text>
+    <circle cx="1254" cy="340" r="33" fill="#e9e1ff" stroke="#9480cc" stroke-width="3"/><text x="1254" y="349" text-anchor="middle" class="nodeText">4</text><text x="1254" y="305" text-anchor="middle" class="indexText">index 4</text>
+  </g>
+  <rect x="1330" y="260" width="220" height="150" rx="14" class="red"/>
+  <text x="1350" y="292" class="body" style="font-weight:700;fill:#b82d39">Cycle found</text>
+  <text x="1350" y="326" class="body">2 → 4 → 2 → 4 …</text>
+  <text x="1350" y="362" class="body" style="font-weight:700">Duplicate = 2</text>
+  <text x="1350" y="391" class="small">Cycle entry is index 2.</text>
+
+  <!-- Floyd -->
+  <rect x="24" y="535" width="930" height="360" rx="18" class="section"/>
+  <rect x="24" y="535" width="930" height="55" rx="18" class="blue"/>
+  <text x="48" y="571" class="head">3. Floyd’s cycle detection</text>
+  <text x="52" y="620" class="body">First, move slow by 1 link and fast by 2 links until they meet.</text>
+  <g>
+    <rect x="48" y="646" width="275" height="210" rx="14" fill="#f6faff" stroke="#c9dced"/>
+    <text x="68" y="680" class="head" style="font-size:21px">Step 1 · Start</text>
+    <text x="68" y="710" class="small">slow = 0, fast = 0</text>
+    <circle cx="105" cy="772" r="25" fill="#dcecff" stroke="#5d91c7" stroke-width="2"/><text x="105" y="780" class="nodeText" text-anchor="middle" style="font-size:21px">0</text>
+    <path d="M132 772 L203 772" stroke="#20354f" stroke-width="3" marker-end="url(#arrow)"/>
+    <circle cx="230" cy="772" r="25" fill="#fff0b8" stroke="#d4ac3c" stroke-width="2"/><text x="230" y="780" class="nodeText" text-anchor="middle" style="font-size:21px">1</text>
+    <text x="105" y="820" class="small" text-anchor="middle">slow + fast</text>
+    <text x="230" y="820" class="small" text-anchor="middle">next index</text>
+
+    <rect x="338" y="646" width="275" height="210" rx="14" fill="#f6faff" stroke="#c9dced"/>
+    <text x="358" y="680" class="head" style="font-size:21px">Step 2 · Move</text>
+    <text x="358" y="710" class="small">slow = 1, fast = 3</text>
+    <circle cx="393" cy="772" r="25" fill="#fff0b8" stroke="#d4ac3c" stroke-width="2"/><text x="393" y="780" class="nodeText" text-anchor="middle" style="font-size:21px">1</text>
+    <path d="M420 772 L490 772" stroke="#20354f" stroke-width="3" marker-end="url(#arrow)"/>
+    <circle cx="517" cy="772" r="25" fill="#ffdcdc" stroke="#d97a7a" stroke-width="2"/><text x="517" y="780" class="nodeText" text-anchor="middle" style="font-size:21px">3</text>
+    <text x="393" y="820" class="small" text-anchor="middle">slow</text>
+    <text x="517" y="820" class="small" text-anchor="middle">fast</text>
+
+    <rect x="628" y="646" width="302" height="210" rx="14" fill="#f6faff" stroke="#c9dced"/>
+    <text x="648" y="680" class="head" style="font-size:21px">Step 3 · Meet</text>
+    <text x="648" y="710" class="small">They meet inside the cycle.</text>
+    <circle cx="690" cy="772" r="25" fill="#d9f5e5" stroke="#5cae84" stroke-width="2"/><text x="690" y="780" class="nodeText" text-anchor="middle" style="font-size:21px">2</text>
+    <circle cx="808" cy="772" r="25" fill="#e9e1ff" stroke="#9480cc" stroke-width="2"/><text x="808" y="780" class="nodeText" text-anchor="middle" style="font-size:21px">4</text>
+    <path d="M716 765 C740 725 765 725 782 765" fill="none" stroke="#e34b52" stroke-width="3" marker-end="url(#redArrow)"/>
+    <path d="M783 790 C755 826 731 826 715 790" fill="none" stroke="#e34b52" stroke-width="3" marker-end="url(#redArrow)"/>
+    <text x="749" y="836" class="small" text-anchor="middle">Reset slow to 0.</text>
+  </g>
+  <text x="52" y="878" class="small">Then move both one step at a time; where they meet again is the duplicate (cycle entry).</text>
+
+  <!-- Code panel -->
+  <rect x="974" y="535" width="602" height="360" rx="18" class="section"/>
+  <rect x="974" y="535" width="602" height="55" rx="18" class="green"/>
+  <text x="998" y="571" class="head">4. C++ code</text>
+  <rect x="995" y="605" width="560" height="266" rx="12" fill="#152131"/>
+  <text x="1015" y="636" class="mono">int findDuplicate(vector&lt;int&gt;&amp; nums) {</text>
+  <text x="1035" y="661" class="mono">int slow = 0, fast = 0;</text>
+  <text x="1035" y="695" class="mono" style="fill:#7de5a2">// Find meeting point</text>
+  <text x="1035" y="720" class="mono">do {</text>
+  <text x="1055" y="745" class="mono">slow = nums[slow];</text>
+  <text x="1055" y="770" class="mono">fast = nums[nums[fast]];</text>
+  <text x="1035" y="795" class="mono">} while (slow != fast);</text>
+  <text x="1035" y="825" class="mono" style="fill:#7de5a2">// Find cycle entry</text>
+  <text x="1035" y="850" class="mono">slow = 0; // move both one step until equal</text>
+  <text x="1015" y="890" class="mono" style="font-size:16px">while (slow != fast) { slow = nums[slow]; fast = nums[fast]; } return slow;</text>
+
+  <!-- Bottom takeaway -->
+  <rect x="24" y="917" width="1552" height="255" rx="18" class="section"/>
+  <rect x="24" y="917" width="1552" height="55" rx="18" class="gold"/>
+  <text x="48" y="953" class="head">5. Remember this</text>
+  <g class="body">
+    <circle cx="72" cy="1011" r="17" fill="#2c8c62"/><text x="72" y="1018" text-anchor="middle" style="font-weight:700;fill:white">1</text>
+    <text x="102" y="1018">Make the node for each index 0, 1, 2, 3, 4 first.</text>
+    <circle cx="72" cy="1061" r="17" fill="#2c8c62"/><text x="72" y="1068" text-anchor="middle" style="font-weight:700;fill:white">2</text>
+    <text x="102" y="1068">Draw each arrow from index i to index nums[i].</text>
+    <circle cx="72" cy="1111" r="17" fill="#2c8c62"/><text x="72" y="1118" text-anchor="middle" style="font-weight:700;fill:white">3</text>
+    <text x="102" y="1118">Cycle = 2 → 4 → 2, so cycle entry and duplicate = 2.</text>
+  </g>
+  <rect x="1010" y="992" width="520" height="140" rx="14" fill="#eaf7ef" stroke="#b7e3c8"/>
+  <text x="1035" y="1028" class="head" style="fill:#176b48">Complexity</text>
+  <text x="1035" y="1067" class="body">Time: O(n) · Each pointer traverses</text>
+  <text x="1035" y="1094" class="body">a constant number of steps.</text>
+  <text x="1035" y="1124" class="body">Space: O(1) · Only two pointers.</text>
+</svg>
