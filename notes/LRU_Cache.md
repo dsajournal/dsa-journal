@@ -11,6 +11,18 @@ The dummy head and tail are placeholder nodes. They do not represent real cache 
 - The LRU node is removed from the front, just after the dummy head.
 - New or accessed nodes are inserted at the back, just before the dummy tail.
 
+Brute Force Approach:
+
+Store the key value pairs in a list, keeping the most recently used item at the front and the least recently used item at the back.
+
+For `get(key)`, search the list for the key. If found, return its value and move the item to the front of the list, marking it as the most recently used. If the key is not found, return `-1`.
+
+For `put(key, value)`, search the list for the key. If it already exists, update its value and move it to the front. If it does not exist and the cache is full, remove the last item from the list, as it is the least recently used. Then insert the new key value pair at the front.
+
+Time Complexity: \\(O(n)\\) for both `get()` and `put()` because searching the list takes linear time.
+
+Space Complexity: \\(O(capacity)\\) to store the cached key value pairs.
+
 ## C++ implementation
 
 ```cpp
