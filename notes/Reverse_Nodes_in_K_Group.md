@@ -44,7 +44,7 @@ Think of the linked list as three sections:
 
 We use two pointers to connect groups:
 
-- `groupStart`: first node of the current group. After reversal, it becomes the last node of that group.
+- `temp`: first node of the current group. After reversal, it becomes the last node of that group.
 - `prevLast`: last node of the previously reversed group. It connects to the new head of the current group.
 
 The Kth node becomes the new head of the reversed group.
@@ -74,12 +74,12 @@ This is important because reversing the current group changes its links. Saving 
 
 ```cpp
 kThNode->next = NULL;
-reverseLinkedList(groupStart);
+reverseLinkedList(temp);
 ```
 
 Disconnecting the group makes the normal linked list reversal function operate only on these `k` nodes.
 
-After reversal, `kThNode` is the new head of this group, while `groupStart` is its tail.
+After reversal, `kThNode` is the new head of this group, while `temp` is its tail.
 
 ### 4. Connect the reversed group
 
@@ -98,7 +98,7 @@ prevLast->next = kThNode;
 Then update the tail pointer:
 
 ```cpp
-prevLast = groupStart;
+prevLast = temp;
 ```
 
 ### 5. Move to the next group
@@ -106,7 +106,7 @@ prevLast = groupStart;
 Continue from the node saved earlier:
 
 ```cpp
-groupStart = nextNode;
+temp = nextNode;
 ```
 
 If the remaining nodes are fewer than `k`, connect them to `prevLast` without reversing them.
@@ -187,16 +187,16 @@ public:
     }
 
     ListNode* reverseKGroup(ListNode* head, int k) {
-        ListNode* groupStart = head;
+        ListNode* temp = head;
         ListNode* prevLast = NULL;
 
-        while (groupStart != NULL) {
-            ListNode* kThNode = getKthNode(groupStart, k);
+        while (temp != NULL) {
+            ListNode* kThNode = getKthNode(temp, k);
 
             // Fewer than k nodes remain. Keep them unchanged.
             if (kThNode == NULL) {
                 if (prevLast != NULL) {
-                    prevLast->next = groupStart;
+                    prevLast->next = temp;
                 }
                 break;
             }
@@ -206,20 +206,20 @@ public:
 
             // Isolate and reverse the current group
             kThNode->next = NULL;
-            reverseLinkedList(groupStart);
+            reverseLinkedList(temp);
 
             // Connect the reversed group
-            if (groupStart == head) {
+            if (temp == head) {
                 head = kThNode;
             } else {
                 prevLast->next = kThNode;
             }
 
-            // groupStart is now the tail of the reversed group
-            prevLast = groupStart;
+            // temp is now the tail of the reversed group
+            prevLast = temp;
 
             // Process the next group
-            groupStart = nextNode;
+            temp = nextNode;
         }
 
         return head;
@@ -237,9 +237,9 @@ Reversing changes the links inside the current group. We must preserve the point
 
 Setting `kThNode->next = NULL` isolates exactly `k` nodes. Otherwise, the reversal function would reverse the rest of the list too.
 
-**3. Why does `groupStart` become `prevLast`?**
+**3. Why does `temp` become `prevLast`?**
 
-After reversing a group, its original first node moves to the end. So `groupStart` is now the tail that will connect to the next reversed group.
+After reversing a group, its original first node moves to the end. So `temp` is now the tail that will connect to the next reversed group.
 
 **4. Why do we need to update the head only once?**
 
